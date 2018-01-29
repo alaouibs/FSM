@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" name="statePersonne" qt:editorversion="4.3.1" xmlns:qt="http://www.qt.io/2015/02/scxml-ext">
+    <parallel id="Detecteur">
+        <qt:editorinfo scenegeometry="86.62;68.49;20.87;35.90;639.46;486.41" geometry="86.62;68.49;-65.75;-32.59;639.46;486.41"/>
+        <state id="Parent">
+            <qt:editorinfo scenegeometry="102.74;137.99;86.19;105.08;526.04;183.48" geometry="16.12;69.50;-16.55;-32.91;526.04;183.48"/>
+            <state id="ParentIn">
+                <qt:editorinfo scenegeometry="166.19;212.52;106.19;162.52;120;100" geometry="63.45;74.53;-60;-50;120;100"/>
+                <transition type="external" event="clickParent" target="ParentOut">
+                    <qt:editorinfo startTargetFactors="88.97;38.77" endTargetFactors="20.37;36.98"/>
+                    <send event="doParentQuit"/>
+                </transition>
+            </state>
+            <state id="ParentOut">
+                <qt:editorinfo scenegeometry="442.17;211.51;382.17;161.51;120;100" geometry="339.43;73.52;-60;-50;120;100"/>
+                <transition type="external" event="clickParent" target="ParentIn">
+                    <qt:editorinfo startTargetFactors="8.09;65.21" endTargetFactors="75.92;65.63"/>
+                    <send event="doParentEnter"/>
+                </transition>
+            </state>
+        </state>
+        <state id="Child">
+            <qt:editorinfo scenegeometry="148.06;373.67;40.87;292.84;595.19;200.19" geometry="61.44;305.18;-107.19;-80.83;595.19;200.19"/>
+            <state id="ChildIn">
+                <qt:editorinfo scenegeometry="164.18;423.03;104.18;373.03;120;100" geometry="16.12;49.36;-60;-50;120;100"/>
+                <transition type="external" event="clickChild" target="ChildOut">
+                    <qt:editorinfo startTargetFactors="92.65;34.59" endTargetFactors="14.71;36.15"/>
+                    <send event="doChildQuit"/>
+                </transition>
+            </state>
+            <state id="ChildOut">
+                <qt:editorinfo scenegeometry="446.20;420.01;386.20;370.01;120;100" geometry="298.14;46.34;-60;-50;120;100"/>
+                <transition type="external" event="clickChild" target="ChildIn">
+                    <qt:editorinfo startTargetFactors="9.56;75.51" endTargetFactors="81.10;72.57"/>
+                    <send event="doChildEnter"/>
+                </transition>
+            </state>
+        </state>
+    </parallel>
+</scxml>

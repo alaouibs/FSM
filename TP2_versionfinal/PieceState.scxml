@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="PieceState" qt:editorversion="4.3.1" initial="AlarmeOff">
+    <qt:editorinfo initialGeometry="-782.50;-727.70;-20;-20;40;40"/>
+    <parallel id="AlarmeOff">
+        <qt:editorinfo geometry="392.96;-480.12;-713.15;-520.71;2120.45;2683.50" scenegeometry="392.96;-480.12;-320.19;-1000.83;2120.45;2683.50"/>
+        <onentry>
+            <send event="setAlarmeOff"/>
+        </onentry>
+        <history type="deep" id="History_2">
+            <qt:editorinfo geometry="790.34;891.38;-20;-20;40;45" scenegeometry="1183.30;411.26;1163.30;391.26;40;45"/>
+        </history>
+        <state id="FenetreTemperature" initial="FenetresFermees">
+            <qt:editorinfo geometry="498.04;-118.09;-1042.75;-198.50;1770.29;813.05" scenegeometry="891;-598.21;-151.75;-796.71;1770.29;813.05"/>
+            <state id="FenetresOuvertes">
+                <qt:editorinfo geometry="626.93;-12.58;-155.61;192;236.22;100" scenegeometry="1517.93;-610.79;1362.32;-418.79;236.22;100"/>
+                <transition type="external" event="clickFenetre" target="History_3">
+                    <qt:editorinfo startTargetFactors="8.56;21.62"/>
+                    <send event="doCloseWindowPiece"/>
+                    <send event="AvertirDomotiqueFermeture"/>
+                </transition>
+                <onentry>
+                    <send event="turnOffTemp"/>
+                </onentry>
+                <transition type="external" event="fermerFenetres" target="FenetresFermees">
+                    <qt:editorinfo movePoint="7.16;14.33" endTargetFactors="99.16;50.60"/>
+                    <send event="doCloseWindowPiece"/>
+                </transition>
+            </state>
+            <parallel id="FenetresFermees">
+                <qt:editorinfo geometry="-695.38;53.07;-305.71;-161.83;1395.03;639.58" scenegeometry="195.62;-545.14;-110.09;-706.97;1395.03;639.58"/>
+                <transition type="external" event="clickFenetre" target="FenetresOuvertes">
+                    <qt:editorinfo startTargetFactors="96.83;42.40" endTargetFactors="16.11;27.07"/>
+                    <send event="doOpenWindowPiece"/>
+                    <send event="AvertirDomotiqueOuverture"/>
+                </transition>
+                <history type="deep" id="History_3">
+                    <qt:editorinfo geometry="1049.32;21.35;-20;-20;40;40" scenegeometry="1244.94;-523.79;1224.94;-543.79;40;40"/>
+                </history>
+                <state id="Radiateur" initial="RadiateurOff">
+                    <qt:editorinfo geometry="-120.68;23.28;-147.25;-106.73;569.45;240.11" scenegeometry="74.94;-521.86;-72.31;-628.59;569.45;240.11"/>
+                    <state id="RadiateurOn">
+                        <qt:editorinfo geometry="50.22;-5.11;-177.47;-47.21;212.43;120.16" scenegeometry="125.16;-526.97;-52.31;-574.18;212.43;120.16"/>
+                        <transition type="external" event="clickRadiateur" target="RadiateurOff">
+                            <qt:editorinfo movePoint="1.57;7.92" startTargetFactors="94.56;31.29" endTargetFactors="23.53;30.57"/>
+                        </transition>
+                        <onentry>
+                            <send event="doAllumer"/>
+                        </onentry>
+                        <transition type="internal" event="TurnRadiateurOn" target="RadiateurOn"/>
+                    </state>
+                    <state id="RadiateurOff">
+                        <qt:editorinfo geometry="344.55;-17.46;-91.28;-24.78;145.97;100" scenegeometry="419.49;-539.32;328.21;-564.10;145.97;100"/>
+                        <transition type="external" event="clickRadiateur" target="RadiateurOn">
+                            <qt:editorinfo startTargetFactors="4.10;68.65" endTargetFactors="70.67;69.01"/>
+                        </transition>
+                        <onentry>
+                            <send event="turnOffTemp"/>
+                        </onentry>
+                        <transition type="external" event="TurnRadiateurOn" target="RadiateurOn">
+                            <qt:editorinfo endTargetFactors="67.87;81.79" localGeometry="-163.87;95.24;-282.41;95.24"/>
+                        </transition>
+                    </state>
+                </state>
+                <state id="ProgrammationRadiateur" initial="RadiateurNotProgrammed">
+                    <qt:editorinfo geometry="-204.37;267.22;-60;-93.31;1059;268.78" scenegeometry="-8.75;-277.92;-68.75;-371.23;1059;268.78"/>
+                    <state id="RadiateurProgrammed">
+                        <qt:editorinfo geometry="798.44;15.77;-189.11;-51.39;282.71;189.75" scenegeometry="789.69;-262.15;600.58;-313.54;282.71;189.75"/>
+                        <transition type="internal" event="ProgrammerMatin" target="RadiateurProgrammed">
+                            <send event="doProgrammerRadiateurMatin"/>
+                        </transition>
+                        <transition type="internal" event="ProgrammerAprem" target="RadiateurProgrammed">
+                            <send event="doProgrammerRadiateurAprem"/>
+                        </transition>
+                        <transition type="internal" event="ProgrammerSoiree" target="RadiateurProgrammed">
+                            <send event="doProgrammerRadiateurSoiree"/>
+                        </transition>
+                        <transition type="internal" event="ProgrammerNuit" target="RadiateurProgrammed">
+                            <send event="doProgrammerRadiateurNuit"/>
+                        </transition>
+                        <transition type="external" event="DeprogrammationRadiateur" target="RadiateurNotProgrammed">
+                            <qt:editorinfo startTargetFactors="9.71;82.69" endTargetFactors="89.02;81.79"/>
+                        </transition>
+                        <transition type="external" event="clickProgramRadiateur" target="RadiateurNotProgrammed">
+                            <qt:editorinfo endTargetFactors="70.53;66.71"/>
+                            <send event="doDeProgrammerRadiateur"/>
+                        </transition>
+                    </state>
+                    <state id="RadiateurNotProgrammed">
+                        <qt:editorinfo geometry="55.94;24.47;-60;-50;296;181" scenegeometry="47.19;-253.45;-12.81;-303.45;296;181"/>
+                        <transition type="external" event="clickProgramRadiateur" target="RadiateurProgrammed">
+                            <qt:editorinfo endTargetFactors="14.03;33.95" localGeometry="298.28;-108.66"/>
+                            <send event="doProgrammerRadiateur"/>
+                        </transition>
+                    </state>
+                </state>
+            </parallel>
+        </state>
+        <state id="LumiereDomotique">
+            <qt:editorinfo geometry="-520.18;1113.56;-172.32;-426.18;981.01;1431.94" scenegeometry="-127.22;633.44;-299.54;207.26;981.01;1431.94"/>
+            <parallel id="LumiereParallele">
+                <qt:editorinfo geometry="48.43;97.81;-200.75;-398.07;926.89;1239.45" scenegeometry="-78.79;731.25;-279.54;333.18;926.89;1239.45"/>
+                <state id="Allumage">
+                    <qt:editorinfo geometry="-38.15;-3.48;-137.22;-280.22;869.15;743.88" scenegeometry="-116.94;727.77;-254.16;447.55;869.15;743.88"/>
+                    <state id="LightOff">
+                        <qt:editorinfo geometry="38.87;326.41;-141.91;9.43;120;100" scenegeometry="-44.88;869.13;-186.79;878.56;120;100"/>
+                        <transition type="external" event="clickLumiereOn" target="TimePassing">
+                            <qt:editorinfo startTargetFactors="91.54;25" endTargetFactors="3.37;27.76" localGeometry="240.59;-45.48"/>
+                            <send event="setTurnOn"/>
+                        </transition>
+                        <onentry>
+                            <send event="doTurnOffLumiere"/>
+                        </onentry>
+                        <transition type="external" event="clickProgramLight" target="LightOffProgrammed"/>
+                    </state>
+                    <state id="TimePassing">
+                        <qt:editorinfo geometry="563.80;341.95;-194.14;-49.05;214.14;150.76" scenegeometry="509.27;1103;315.13;1053.95;214.14;150.76"/>
+                        <transition type="external" event="clickLumiereOff" target="LightOff">
+                            <qt:editorinfo movePoint="3.74;13.72" startTargetFactors="9.90;70.81" endTargetFactors="88.24;77.91"/>
+                        </transition>
+                        <transition type="external" event="Interruption" target="LightOff">
+                            <qt:editorinfo endTargetFactors="79.55;50.77"/>
+                            <send event="doTurnOffLumiereInterruption"/>
+                        </transition>
+                        <onentry>
+                            <send event="doStartLight"/>
+                        </onentry>
+                        <transition type="external" event="clickProgramLight" target="LightOnProgrammed">
+                            <qt:editorinfo endTargetFactors="69.47;79.06"/>
+                        </transition>
+                    </state>
+                    <state id="LightOffProgrammed">
+                        <qt:editorinfo geometry="-57.22;77.89;-60;-50;185;100" scenegeometry="-140.97;620.61;-200.97;570.61;185;100"/>
+                        <transition type="external" event="turnOnProgrammed" target="LightOnProgrammed">
+                            <qt:editorinfo endTargetFactors="9.08;74.47" startTargetFactors="86.16;74.49" localGeometry="227.24;37.40"/>
+                        </transition>
+                        <onentry>
+                            <send event="doTurnOffLumiere"/>
+                        </onentry>
+                        <transition type="external" event="clickLumiereOn" target="LightOnProgrammed">
+                            <qt:editorinfo endTargetFactors="21.33;67.84" startTargetFactors="79.60;57.18" localGeometry="275.77;12.23"/>
+                            <send event="doTurnOnManually"/>
+                        </transition>
+                    </state>
+                    <state id="Wait">
+                        <qt:editorinfo geometry="546.19;-121.52;-98.50;-50;231;100" scenegeometry="429.25;606.25;330.75;556.25;231;100"/>
+                        <transition type="external" event="Nothing" target="LightOnProgrammed">
+                            <qt:editorinfo startTargetFactors="19.57;78.28"/>
+                        </transition>
+                        <onentry>
+                            <send event="Nothing" delay="3"/>
+                        </onentry>
+                        <transition type="external" event="clickLumiereOff" target="LightOffProgrammed">
+                            <qt:editorinfo localGeometry="-587.91;13.75"/>
+                            <cancel sendid="Nothing"/>
+                        </transition>
+                    </state>
+                    <state id="LightOnProgrammed">
+                        <qt:editorinfo geometry="673.42;55.55;-207.75;-46.77;227.75;112.77" scenegeometry="618.89;816.60;411.14;769.83;227.75;112.77"/>
+                        <transition type="external" event="turnOffProgrammed" target="LightOffProgrammed">
+                            <qt:editorinfo endTargetFactors="90.05;22.84" startTargetFactors="7.79;36.09"/>
+                        </transition>
+                        <transition type="external" event="Interruption" target="LightOff">
+                            <qt:editorinfo endTargetFactors="74.97;18.69"/>
+                        </transition>
+                        <transition type="internal" event="turnOnProgrammed" target="LightOnProgrammed">
+                            <qt:editorinfo startTargetFactors="26.56;75.20" endTargetFactors="56.39;71.01"/>
+                        </transition>
+                        <onentry>
+                            <send event="doStartLight"/>
+                        </onentry>
+                        <transition type="external" event="clickLumiereOff" target="Wait">
+                            <qt:editorinfo localGeometry="140.80;-95.77"/>
+                        </transition>
+                        <transition type="internal" event="clickLumiereOn" target="LightOnProgrammed">
+                            <qt:editorinfo endTargetFactors="29.08;67.20"/>
+                            <send event="doTurnOnManually"/>
+                        </transition>
+                    </state>
+                </state>
+                <state id="Programmation" initial="LumierePasProgrammee">
+                    <qt:editorinfo geometry="1.30;491.49;-182.05;-21.22;777.77;292.54" scenegeometry="-77.49;1222.74;-259.54;1201.52;777.77;292.54"/>
+                    <state id="LumierePasProgrammee">
+                        <qt:editorinfo geometry="-78.15;43.23;-74.63;30;221.27;100" scenegeometry="-155.64;1265.97;-230.27;1295.97;221.27;100"/>
+                        <transition type="external" event="clickProgramLight" target="LumiereProgrammee">
+                            <qt:editorinfo endTargetFactors="17.74;41.01"/>
+                            <send event="doValiderProgrammation"/>
+                        </transition>
+                    </state>
+                    <state id="LumiereProgrammee">
+                        <qt:editorinfo geometry="494.25;87.26;-189.11;-50.92;239.74;182.05" scenegeometry="416.76;1310;227.65;1259.08;239.74;182.05"/>
+                        <transition type="internal" event="ProgrammerMatin" target="LumiereProgrammee">
+                            <send event="doProgrammerMatin"/>
+                        </transition>
+                        <transition type="internal" event="ProgrammerAprem" target="LumiereProgrammee">
+                            <send event="doProgrammerAprem"/>
+                        </transition>
+                        <transition type="internal" event="ProgrammerSoiree" target="LumiereProgrammee">
+                            <send event="doProgrammerSoiree"/>
+                        </transition>
+                        <transition type="internal" event="ProgrammerNuit" target="LumiereProgrammee">
+                            <send event="doProgrammerNuit"/>
+                        </transition>
+                        <transition type="external" event="Interruption" target="LumierePasProgrammee">
+                            <qt:editorinfo endTargetFactors="90.70;78.12"/>
+                        </transition>
+                        <transition type="external" event="clickProgramLight" target="LumierePasProgrammee">
+                            <qt:editorinfo startTargetFactors="4.57;90.46" endTargetFactors="93.58;87.10"/>
+                            <send event="doDeprogrammer"/>
+                        </transition>
+                    </state>
+                </state>
+            </parallel>
+        </state>
+        <state id="Cinema" initial="NotAmbianceCinema">
+            <qt:editorinfo geometry="639.74;997.86;-88.27;41.71;835.83;428.84" scenegeometry="1032.70;517.74;944.43;559.45;835.83;428.84"/>
+            <state id="AmbianceCinema">
+                <qt:editorinfo geometry="671.06;158.14;-207.19;-50.70;263.69;178.36" scenegeometry="1703.76;675.88;1496.57;625.18;263.69;178.36"/>
+                <transition type="external" event="clickLumiereOn" target="NotAmbianceCinema">
+                    <qt:editorinfo localGeometry="-234.71;78.46;-395.73;78.46"/>
+                </transition>
+                <transition type="external" event="clickLumiereOff" target="NotAmbianceCinema">
+                    <qt:editorinfo localGeometry="-225.71;122.52;-406.32;122.52"/>
+                </transition>
+                <transition type="external" event="clickFenetre" target="NotAmbianceCinema"/>
+                <transition type="external" event="clickRadiateur" target="NotAmbianceCinema">
+                    <qt:editorinfo endTargetFactors="67.46;89.68" localGeometry="-122.22;219.79;-450.62;219.79"/>
+                </transition>
+                <transition type="external" event="Interruption" target="NotAmbianceCinema">
+                    <qt:editorinfo endTargetFactors="82;88.64" localGeometry="-197.34;170.67;-432.32;170.67"/>
+                </transition>
+                <onentry>
+                    <send event="doAmbianceCinema"/>
+                </onentry>
+            </state>
+            <state id="NotAmbianceCinema">
+                <qt:editorinfo geometry="-6;162.12;-60;-50;196;169" scenegeometry="1026.70;679.86;966.70;629.86;196;169"/>
+                <transition type="internal" event="clickAmbianceCinema" target="AmbianceCinema">
+                    <qt:editorinfo startTargetFactors="84.37;36.23" endTargetFactors="28.04;45.08" localGeometry="206.56;-59.34"/>
+                    <send event="doAmbianceCinema"/>
+                </transition>
+            </state>
+        </state>
+        <transition type="external" event="setAlarmeOn" target="AlarmeOn">
+            <qt:editorinfo startTargetFactors="1.06;28.97" endTargetFactors="78.40;46.11"/>
+        </transition>
+    </parallel>
+    <state id="IntruderWindowAnalyse">
+        <qt:editorinfo geometry="-810.96;114.22;-60;-50;251;100" scenegeometry="-810.96;114.22;-870.96;64.22;251;100"/>
+        <transition type="external" event="Return" target="AlarmeOn">
+            <qt:editorinfo startTargetFactors="17.78;14.66"/>
+        </transition>
+        <onentry>
+            <send event="AnalyserAlarme"/>
+        </onentry>
+    </state>
+    <state id="AlarmeOn">
+        <qt:editorinfo geometry="-765.95;-188.12;-137;-50;197;100" scenegeometry="-765.95;-188.12;-902.95;-238.12;197;100"/>
+        <transition type="external" event="setAlarmeOff" target="History_2">
+            <qt:editorinfo localGeometry="431.14;356.53;1987.75;356.53"/>
+        </transition>
+        <onentry>
+            <send event="dosetAlarmeOn"/>
+        </onentry>
+        <transition type="external" event="clickFenetre" target="IntruderWindowAnalyse">
+            <qt:editorinfo startTargetFactors="54.60;86.21" localGeometry="-15.99;185.24"/>
+        </transition>
+        <transition type="external" event="clickRadiateur" target="IntruderWindowAnalyse">
+            <qt:editorinfo endTargetFactors="28.46;24.59" localGeometry="-77.98;161.64"/>
+        </transition>
+        <transition type="external" event="clickLight" target="IntruderWindowAnalyse">
+            <qt:editorinfo endTargetFactors="84.62;10.34" localGeometry="178.20;164.11"/>
+        </transition>
+        <transition type="external" event="clickProgramLight" target="IntruderWindowAnalyse">
+            <qt:editorinfo movePoint="-12.82;-30.76" startTargetFactors="67.73;82.76" endTargetFactors="64.20;17.83"/>
+        </transition>
+        <transition type="external" event="clickProgramRadiateur" target="IntruderWindowAnalyse">
+            <qt:editorinfo endTargetFactors="50.75;13.41"/>
+        </transition>
+    </state>
+</scxml>

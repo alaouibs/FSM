@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="GestionAppartement" qt:editorversion="4.3.1">
+    <parallel id="Centre_Domotique">
+        <qt:editorinfo geometry="232.26;437.35;-293.58;-468.17;1180;1298.72" scenegeometry="232.26;437.35;-61.32;-30.82;1180;1298.72"/>
+        <state id="AppartementLumiere">
+            <qt:editorinfo geometry="-78.69;-150.84;-173.48;-199.41;291.41;181.54" scenegeometry="153.57;286.51;-19.91;87.10;291.41;181.54"/>
+            <state id="EtatAppartement">
+                <qt:editorinfo geometry="53.97;-95.90;-207.45;-46.26;245.77;104.29" scenegeometry="207.54;190.61;0.09;144.35;245.77;104.29"/>
+                <transition type="internal" event="clickEteindreLumieres" target="EtatAppartement">
+                    <send event="doTurnOffAllLight"/>
+                </transition>
+            </state>
+        </state>
+        <state id="MomentJournee">
+            <qt:editorinfo geometry="204.66;-112.33;-146.58;-53.11;654.13;320.16" scenegeometry="436.92;325.02;290.34;271.91;654.13;320.16"/>
+            <state id="Matin">
+                <qt:editorinfo geometry="5.03;59.34;-115.28;-50;175.28;100" scenegeometry="441.95;384.36;326.67;334.36;175.28;100"/>
+                <transition type="external" event="ChangementMomentJournee" target="Aprem"/>
+                <onentry>
+                    <send event="doDisplayMatin"/>
+                </onentry>
+            </state>
+            <state id="Aprem">
+                <qt:editorinfo geometry="421.82;56.10;-154.12;-50;214.12;100" scenegeometry="858.74;381.12;704.62;331.12;214.12;100"/>
+                <transition type="external" event="ChangementMomentJournee" target="Soiree"/>
+                <onentry>
+                    <send event="doDisplayAprem"/>
+                </onentry>
+            </state>
+            <state id="Nuit">
+                <qt:editorinfo geometry="27.50;197.05;-154.08;-50;214.08;100" scenegeometry="464.42;522.07;310.34;472.07;214.08;100"/>
+                <transition type="external" event="ChangementMomentJournee" target="Matin">
+                    <qt:editorinfo movePoint="8.10;8.10"/>
+                </transition>
+                <onentry>
+                    <send event="doDisplayNuit"/>
+                </onentry>
+            </state>
+            <state id="Soiree">
+                <qt:editorinfo geometry="425.58;188.59;-153.78;-50;213.78;100" scenegeometry="862.50;513.61;708.72;463.61;213.78;100"/>
+                <transition type="external" event="ChangementMomentJournee" target="Nuit">
+                    <qt:editorinfo movePoint="10.52;10.17" endTargetFactors="94.78;43.80"/>
+                </transition>
+                <onentry>
+                    <send event="doDisplaySoiree"/>
+                </onentry>
+            </state>
+        </state>
+        <state id="Temps">
+            <qt:editorinfo geometry="52.64;-343.60;8.36;-0.60;401.89;173.69" scenegeometry="284.90;93.75;293.26;93.15;401.89;173.69"/>
+            <state id="ready">
+                <qt:editorinfo geometry="88.36;103.07;-60;-50;120;100" scenegeometry="373.26;196.82;313.26;146.82;120;100"/>
+                <transition type="external" event="begin" target="running">
+                    <send event="doStart"/>
+                </transition>
+            </state>
+            <state id="running">
+                <qt:editorinfo geometry="363.10;99.82;-120.08;-50;143.13;100" scenegeometry="648;193.57;527.92;143.57;143.13;100"/>
+                <transition type="internal" event="timeout" target="running">
+                    <send event="doRefreshDisplay"/>
+                </transition>
+                <onentry>
+                    <send event="timeout" delay="1s"/>
+                </onentry>
+            </state>
+        </state>
+        <state id="FenetresAlarmes" initial="FenetresFermees">
+            <qt:editorinfo geometry="196.62;189.89;-468.87;-23.02;1100;643.68" scenegeometry="428.88;627.24;-39.99;604.22;1100;643.68"/>
+            <state id="FenetresOuvertes">
+                <qt:editorinfo geometry="-134.29;57.66;-301.24;32.85;460.61;430" scenegeometry="293.26;632.89;-7.98;665.74;460.61;430"/>
+                <onentry>
+                    <send event="validerFenetresOuvertes"/>
+                </onentry>
+                <state id="UneFenetre">
+                    <qt:editorinfo geometry="34.82;148.65;-60;-50;153;100" scenegeometry="328.08;781.54;268.08;731.54;153;100"/>
+                    <transition type="external" event="OuvertureFenetre" target="DeuxFenetres">
+                        <qt:editorinfo endTargetFactors="84.56;29.28" startTargetFactors="9.47;31.30"/>
+                    </transition>
+                    <transition type="external" event="FermetureFenetre" target="FenetresFermees">
+                        <qt:editorinfo movePoint="-1.56;40.48" endTargetFactors="3.15;41.97" startTargetFactors="70.68;68.14"/>
+                    </transition>
+                </state>
+                <state id="DeuxFenetres">
+                    <qt:editorinfo geometry="-221.24;149.98;-60;-50;120;100" scenegeometry="72.02;782.87;12.02;732.87;120;100"/>
+                    <transition type="external" event="OuvertureFenetre" target="TroisFenetres">
+                        <qt:editorinfo startTargetFactors="77.94;90.52" endTargetFactors="68.77;12.93" localGeometry="54.49;72.84"/>
+                    </transition>
+                    <transition type="external" event="FermetureFenetre" target="UneFenetre">
+                        <qt:editorinfo endTargetFactors="9.46;69.54" startTargetFactors="89.71;67.42" localGeometry="85.71;26.58"/>
+                    </transition>
+                </state>
+                <state id="TroisFenetres">
+                    <qt:editorinfo geometry="-221.24;340.70;-60;-50;120;100" scenegeometry="72.02;973.59;12.02;923.59;120;100"/>
+                    <transition type="external" event="OuvertureFenetre" target="QuatreFenetres">
+                        <qt:editorinfo startTargetFactors="86.76;20.40" endTargetFactors="9.80;35.12"/>
+                    </transition>
+                    <transition type="external" event="FermetureFenetre" target="DeuxFenetres">
+                        <qt:editorinfo endTargetFactors="18.62;77.59" startTargetFactors="24.52;8.62"/>
+                    </transition>
+                </state>
+                <state id="QuatreFenetres">
+                    <qt:editorinfo geometry="62.83;331.36;-77;-50;137;100" scenegeometry="356.09;964.25;279.09;914.25;137;100"/>
+                    <transition type="external" event="FermetureFenetre" target="TroisFenetres">
+                        <qt:editorinfo endTargetFactors="78.44;70.69"/>
+                    </transition>
+                </state>
+            </state>
+            <state id="FenetresFermees">
+                <qt:editorinfo geometry="547.93;55.17;-356.95;52.69;396.09;197.45" scenegeometry="975.48;630.40;618.53;683.09;396.09;197.45"/>
+                <state id="AlarmeOff">
+                    <qt:editorinfo geometry="-300.45;167.81;-36.50;-39.50;120;100" scenegeometry="478.98;811.55;442.48;772.05;120;100"/>
+                    <transition type="external" event="clickAlarme" target="AlarmeOn">
+                        <send event="setAlarmeOn"/>
+                    </transition>
+                    <transition type="external" event="OuvertureFenetre" target="FenetresOuvertes"/>
+                    <onentry>
+                        <send event="validerAlarmeOff"/>
+                    </onentry>
+                </state>
+                <state id="AlarmeOn">
+                    <qt:editorinfo geometry="-63.53;171.14;-60;-41;120;100" scenegeometry="715.90;814.88;655.90;773.88;120;100"/>
+                    <transition type="external" event="clickAlarme" target="AlarmeOff">
+                        <qt:editorinfo startTargetFactors="6.62;66.32" endTargetFactors="75.63;70.97"/>
+                        <send event="setAlarmeOff"/>
+                    </transition>
+                    <onentry>
+                        <send event="validerAlarmeOn"/>
+                    </onentry>
+                </state>
+                <onentry>
+                    <send event="validerFenetresFermees"/>
+                </onentry>
+            </state>
+        </state>
+    </parallel>
+</scxml>

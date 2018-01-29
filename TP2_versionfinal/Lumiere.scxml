@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="Lumiere" qt:editorversion="4.3.1" initial="RegulateurOff">
+    <qt:editorinfo initialGeometry="469.13;609.21;-20;-20;40;40"/>
+    <state id="RegulateurOn">
+        <qt:editorinfo geometry="-76.39;175.91;-87.27;-30.30;788.40;210.09" scenegeometry="-76.39;175.91;-163.66;145.61;788.40;210.09"/>
+        <state id="Good">
+            <qt:editorinfo geometry="194.75;114.69;-262.02;-92.38;312.86;128.38" scenegeometry="118.36;290.60;-143.66;198.22;312.86;128.38" removedInitial="NeedToIncrease"/>
+            <transition type="internal" event="CommencerRegulateurLumiere" target="Good">
+                <send event="regulerLight"/>
+            </transition>
+            <transition type="external" event="tooBright" target="NotGood">
+                <qt:editorinfo startTargetFactors="97.61;33.30" endTargetFactors="10.29;27.71"/>
+                <send event="decreaseLight"/>
+            </transition>
+            <transition type="external" event="tooDark" target="NotGood">
+                <qt:editorinfo startTargetFactors="95.57;47.64" endTargetFactors="5.35;45.47"/>
+                <send event="increaseLight"/>
+            </transition>
+            <onentry>
+                <send event="CommencerRegulateurLumiere"/>
+            </onentry>
+        </state>
+        <state id="NotGood">
+            <qt:editorinfo geometry="639.18;133;-115.44;-96.50;142.78;100" scenegeometry="562.79;308.91;447.35;212.41;142.78;100"/>
+            <transition type="external" event="check" target="Good">
+                <qt:editorinfo startTargetFactors="7.35;62.48" endTargetFactors="97.07;62.85"/>
+            </transition>
+            <onentry>
+                <send event="check" delay="1s"/>
+            </onentry>
+        </state>
+        <transition type="external" event="setOff" target="RegulateurOff">
+            <qt:editorinfo startTargetFactors="28.56;89.62" localGeometry="-28.45;253.38"/>
+        </transition>
+    </state>
+    <state id="RegulateurOff">
+        <qt:editorinfo geometry="231.54;592.73;-155;-81;308;146" scenegeometry="231.54;592.73;76.54;511.73;308;146"/>
+        <transition type="external" event="setOn" target="RegulateurOn">
+            <qt:editorinfo endTargetFactors="73.25;91.92" localGeometry="245.62;-19.95"/>
+        </transition>
+    </state>
+</scxml>
